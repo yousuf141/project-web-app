@@ -3,9 +3,53 @@ import Switch from "@mui/material/Switch";
 
 import "./App.css";
 
+import { socket } from "./socket";
+
 const App: React.FC = () => {
   const [fan, setFan] = React.useState(false);
   const [light, setLight] = React.useState(false);
+
+  React.useEffect(() => {
+    socket.connect();
+
+    socket.on(
+      "itemUpdated",
+      ({ item, value }: { item: string; value: boolean }) => {
+        switch (item) {
+          case "fan":
+            setFan(value);
+            break;
+          case "light":
+            setLight(value);
+            break;
+          default:
+            console.log("failed to update item: Unknown Item");
+        }
+      }
+    );
+
+    socket.emit("readItem");
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  function handleFanUpdate(
+    _: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) {
+    setFan(checked);
+    socket.emit("itemUpdated", { item: "fan", value: checked });
+  }
+
+  function handleLightUpdate(
+    _: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) {
+    setLight(checked);
+    socket.emit("itemUpdated", { item: "light", value: checked });
+  }
 
   return (
     <div className="content-wrapper">
@@ -26,7 +70,7 @@ const App: React.FC = () => {
             <Switch
               className="switch"
               checked={fan}
-              onChange={() => setFan((x) => !x)}
+              onChange={handleFanUpdate}
             />
           </div>
           <div className="item">
@@ -34,7 +78,7 @@ const App: React.FC = () => {
             <Switch
               className="switch"
               checked={light}
-              onChange={() => setLight((x) => !x)}
+              onChange={handleLightUpdate}
             />
           </div>
         </article>
