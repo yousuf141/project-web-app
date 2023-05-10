@@ -40,7 +40,7 @@ const App: React.FC = () => {
     checked: boolean
   ) {
     setFan(checked);
-    socket.emit("itemUpdated", { item: "fan", value: checked });
+    socket.emit("updateItem", { item: "fan", value: checked });
   }
 
   function handleLightUpdate(
@@ -48,7 +48,7 @@ const App: React.FC = () => {
     checked: boolean
   ) {
     setLight(checked);
-    socket.emit("itemUpdated", { item: "light", value: checked });
+    socket.emit("updateItem", { item: "light", value: checked });
   }
 
   return (
