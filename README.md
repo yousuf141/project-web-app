@@ -10,3 +10,15 @@ This is the webpage for my final year project, it is a React web app allowing us
 | Env Variable | Description                                                     | Example               |
 |--------------|-----------------------------------------------------------------|-----------------------|
 | WS_ENDPOINT  | This needs to point to the web service end point of the project | http://localhost:3000 |
+
+## Installation
+
+```bash
+$ npm install
+```
+
+## Running the app
+
+```bash
+# development
+$ npm run dev
